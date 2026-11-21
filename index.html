@@ -3,7 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<base href="/">
+<script>
+// Автоматический base href для корректной работы как на основном домене, так и на подкаталогах GitHub Pages
+(function() {
+  var p = window.location.pathname;
+  var host = window.location.hostname;
+  if (host.endsWith('github.io')) {
+    var segs = p.split('/').filter(Boolean);
+    if (segs.length > 0 && !segs[0].endsWith('.html') && !segs[0].endsWith('.php')) {
+      document.write('<base href="/' + segs[0] + '/">');
+      return;
+    }
+  }
+  document.write('<base href="/">');
+})();
+</script>
 <!-- Основные мета-теги -->
 <title>Global Lens — мир без фильтров и клише | Официальный портал</title>
 <meta name="description" content="Официальный сайт проекта Global Lens: правила сервера, геополитика, военное дело, статистика игроков, информация о сезонах и актуальный статус.">

@@ -213,15 +213,28 @@ export function initNavigation() {
     }
   }, { passive: true });
 
+function extractRouteFromPath() {
+  const parts = window.location.pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
+  if (!parts.length) return null;
+  // На GitHub Pages первый сегмент пути — это имя проектного репозитория, пропускаем его
+  if (window.location.hostname.endsWith('github.io') && parts[0].toLowerCase().includes('github.io')) {
+    parts.shift();
+  }
+  const candidate = parts[0] || null;
+  if (candidate && !candidate.includes('.') && candidate !== 'index.html') {
+    return candidate;
+  }
+  return null;
+}
+
   // Реакция на изменение истории браузера (кнопки назад/вперед)
   window.addEventListener('popstate', (e) => {
     if (e.state && e.state.page) {
       go(e.state.page);
       return;
     }
-    const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0];
     const rawHash = (window.location.hash || '').replace(/^[#/]+/, '').trim();
-    const route = rawHash || (rawPath && !rawPath.includes('.') && rawPath !== 'index.html' ? rawPath : 'home');
+    const route = rawHash || extractRouteFromPath() || 'home';
     go(route);
   });
 
@@ -237,8 +250,7 @@ export function initNavigation() {
   const urlParams = new URLSearchParams(window.location.search);
   const queryRoute = urlParams.get('page') || urlParams.get('tab') || urlParams.get('p') || (window.location.search.replace(/^\?/, '').split('&')[0]);
   const rawHash = (window.location.hash || '').replace(/^[#/]+/, '').trim();
-  const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0];
-  const validPath = (rawPath && !rawPath.includes('.') && rawPath !== 'index.html') ? rawPath : null;
+  const validPath = extractRouteFromPath();
 
   const startRoute = rawHash || queryRoute || validPath || 'home';
   if (startRoute) {
