@@ -3,6 +3,7 @@
  */
 import { esc, fmtNum, normName } from './utils.js';
 import { renderFlag } from './season.js';
+import { playerMeta, getPlayers } from './auth.js';
 
 export const ALLIANCES_MASTER = [
   {
@@ -15,8 +16,8 @@ export const ALLIANCES_MASTER = [
     icon: '🛡️',
     leader: 'Индия',
     leaderFlag: '🇮🇳',
-    defaultMembers: ['Индия', 'Южная Корея', 'Австралия', 'Тайвань'],
-    description: 'Ключевой тихоокеанский пакт коллективной обороны и безопасности, сформированный для сдерживания гегемонии в океанических акваториях и защиты союзников в Азиатско-Тихоокеанском регионе.'
+    defaultMembers: ['Индия', 'Южная Корея', 'Тайвань', 'Япония', 'Австралия'],
+    description: 'Ключевой тихоокеанский пакт коллективной обороны и безопасности, сформированный под эгидой Индии для защиты стратегических морских путей и сдерживания эскалации в Азиатско-Тихоокеанском регионе.'
   },
   {
     tag: 'PEC',
@@ -28,8 +29,8 @@ export const ALLIANCES_MASTER = [
     icon: '🌐',
     leader: 'Индия',
     leaderFlag: '🇮🇳',
-    defaultMembers: ['Индия', 'Австралия', 'Тайвань'],
-    description: 'Экономический альянс The Fire Rises, учреждённый Индией как финансовое дополнение к ОДТО. Включает Инвестиционный банк развития ($20 млрд капитал), беспошлинный технопояс «Китай + 1» (0% налог на 10 лет) и прямую мультивалютную клиринговую систему PEC-Clear.'
+    defaultMembers: ['Индия', 'Украина', 'Япония', 'США', 'Израиль'],
+    description: 'Экономический союз The Fire Rises, учреждённый Индией как финансовое дополнение к ОДТО. Включает Инвестиционный банк развития ($20 млрд капитал), беспошлинный технопояс «Китай + 1» (0% налог на 10 лет) и прямую мультивалютную клиринговую систему PEC-Clear.'
   },
   {
     tag: 'NATO',
@@ -54,7 +55,7 @@ export const ALLIANCES_MASTER = [
     icon: '⭐',
     leader: 'Германия',
     leaderFlag: '🇩🇪',
-    defaultMembers: ['Германия', 'Ирландия', 'Испания', 'Великобритания', 'Турция'],
+    defaultMembers: ['Германия', 'Великобритания', 'Ирландия', 'Испания', 'Турция'],
     description: 'Наднациональное экономическое и политическое объединение европейских государств с общим внутренним рынком, едиными таможенными правилами и координацией внешней политики.'
   },
   {
@@ -67,7 +68,7 @@ export const ALLIANCES_MASTER = [
     icon: '🤝',
     leader: 'КНР',
     leaderFlag: '🇨🇳',
-    defaultMembers: ['КНР', 'Россия', 'Азербайджан', 'Сирия', 'Иран', 'Индия'],
+    defaultMembers: ['КНР', 'Индия', 'Иран', 'Сирия', 'Азербайджан'],
     description: 'Евразийский политический, экономический альянс и блок безопасности, нацеленный на противодействие терроризму, обеспечение стабильности и координацию ресурсных коридоров.'
   },
   {
@@ -106,7 +107,7 @@ export const ALLIANCES_MASTER = [
     icon: '🛡️',
     leader: 'Россия',
     leaderFlag: '🇷🇺',
-    defaultMembers: ['Россия', 'Сирия'],
+    defaultMembers: ['Россия', 'Сирия', 'Беларусь'],
     description: 'Региональная военно-политическая организация коллективной безопасности на постсоветском пространстве с взаимными гарантиями защиты суверенитета.'
   },
   {
@@ -119,7 +120,7 @@ export const ALLIANCES_MASTER = [
     icon: '🌐',
     leader: 'Россия',
     leaderFlag: '🇷🇺',
-    defaultMembers: ['Россия', 'Азербайджан'],
+    defaultMembers: ['Россия', 'Беларусь', 'Азербайджан'],
     description: 'Региональная межгосударственная организация, содействующая всестороннему сотрудничеству, таможенно-логистическим коридорам и поддержанию геополитической стабильности на постсоветском пространстве.'
   }
 ];
@@ -159,27 +160,33 @@ for (const a of ALLIANCES_MASTER) {
  */
 export function computeAlliancesData(seasonEntities = {}, countriesData = {}) {
   const result = [];
-  const entitiesList = Object.values(seasonEntities).filter(e => e && e.country);
+  const entitiesList = Object.entries(seasonEntities).map(([id, e]) => ({ ...(e || {}), id: e?.id || id }));
+  const playersMap = getPlayers() || {};
 
   for (const master of ALLIANCES_MASTER) {
     const item = { ...master };
     const membersMap = new Map();
 
-    // 1. Сначала добавляем дефолтных участников
+    // 1. Дефолтные участники из конфигурации альянса
     for (const mName of master.defaultMembers) {
-      membersMap.set(normName(mName), {
+      const cNorm = normName(mName);
+      membersMap.set(cNorm, {
         name: mName,
         flag: countriesData[mName]?.flag || '🏳️',
         gdp: countriesData[mName]?.gdp || 0,
         population: countriesData[mName]?.population || 0,
         player: null,
-        isLeader: (normName(mName) === normName(master.leader))
+        nickname: null,
+        playerId: null,
+        avatar: null,
+        isLeader: (cNorm === normName(master.leader))
       });
     }
 
-    // 2. Обогащаем реальными данными из активных сущностей сезона
+    // 2. Обогащаем реальными данными из активных сущностей сезона 31
     for (const ent of entitiesList) {
       const cName = ent.country;
+      if (!cName) continue;
       const cNorm = normName(cName);
       const roles = (ent.roles || []).map(r => (typeof r === 'string' ? r : (r && r.name) || '')).filter(Boolean);
 
@@ -198,7 +205,7 @@ export function computeAlliancesData(seasonEntities = {}, countriesData = {}) {
         }
       }
 
-      // Особый случай для Индии и ТЭС
+      // Особый случай для Индии и ТЭС / ОДТО
       if (cNorm === 'индия' && (master.name === 'ТЭС' || master.name === 'ОДТО')) {
         belongs = true;
         isLeaderOfThis = true;
@@ -206,15 +213,24 @@ export function computeAlliancesData(seasonEntities = {}, countriesData = {}) {
 
       if (belongs) {
         const flag = countriesData[cName]?.flag || ent.flag || '🏳️';
-        membersMap.set(cNorm, {
-          name: cName,
-          flag: flag,
-          gdp: ent.gdp || countriesData[cName]?.gdp || 0,
-          population: ent.population || countriesData[cName]?.population || 0,
-          player: ent.player || ent.ruler,
-          nickname: ent.nickname,
-          isLeader: isLeaderOfThis || (normName(cName) === normName(master.leader))
-        });
+        const pId = ent.playerId || ent.player_id || ent.id;
+        const pMeta = pId ? playerMeta(String(pId)) : null;
+
+        // Если уже есть участник, но эта сущность является лидером или имеет реального игрока, перезаписываем
+        const existing = membersMap.get(cNorm);
+        if (!existing || isLeaderOfThis || !existing.player) {
+          membersMap.set(cNorm, {
+            name: cName,
+            flag: flag,
+            gdp: ent.gdp || countriesData[cName]?.gdp || existing?.gdp || 0,
+            population: ent.population || countriesData[cName]?.population || existing?.population || 0,
+            player: ent.player || (pMeta && pMeta.name) || ent.ruler,
+            nickname: ent.nickname || (pMeta && pMeta.name),
+            playerId: pId,
+            avatar: (pMeta && pMeta.avatar) || (pId && playersMap[String(pId)]?.avatar_url) || null,
+            isLeader: isLeaderOfThis || (cNorm === normName(master.leader))
+          });
+        }
       }
     }
 
@@ -229,6 +245,7 @@ export function computeAlliancesData(seasonEntities = {}, countriesData = {}) {
     item.leaderCountry = leaderObj ? leaderObj.name : master.leader;
     item.leaderPlayer = leaderObj ? (leaderObj.player || leaderObj.nickname) : null;
     item.leaderFlag = leaderObj ? leaderObj.flag : master.leaderFlag;
+    item.leaderAvatar = leaderObj ? leaderObj.avatar : null;
 
     result.push(item);
   }
@@ -243,16 +260,34 @@ export function renderSeasonAlliancesCards(alliancesList) {
   if (!alliancesList || !alliancesList.length) return '';
 
   return alliancesList.map(al => {
+    const leaderAvaHtml = al.leaderAvatar
+      ? `<img src="${al.leaderAvatar}" class="al-leader-ava" alt="${esc(al.leaderPlayer || al.leaderCountry)}" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">`
+      : '';
+
     const leaderHtml = al.leaderCountry
-      ? `<span class="al-leader-badge" title="Лидер альянса">👑 ${renderFlag(al.leaderFlag, al.leaderCountry)} <b>${esc(al.leaderCountry)}</b>${al.leaderPlayer ? ` <span class="al-player">(@${esc(al.leaderPlayer)})</span>` : ''}</span>`
+      ? `<span class="al-leader-badge" title="Лидер альянса: ${esc(al.leaderCountry)}">
+          ${renderFlag(al.leaderFlag, al.leaderCountry)}
+          ${leaderAvaHtml}
+          <span>${esc(al.leaderCountry)}</span>
+          ${al.leaderPlayer ? ` <span class="al-player">(@${esc(al.leaderPlayer)})</span>` : ''}
+        </span>`
       : '—';
 
-    const membersFlagsHtml = al.members.map(m => `
-      <span class="al-member-chip" title="${esc(m.name)}" onclick="event.stopPropagation(); window.openCountryModal('${esc(m.name)}')">
-        ${renderFlag(m.flag, m.name)}
-        <span class="al-member-name">${esc(m.name)}</span>
-      </span>
-    `).join('');
+    const membersFlagsHtml = al.members.map(m => {
+      const memberAvaHtml = m.avatar
+        ? `<img src="${m.avatar}" class="al-member-ava" alt="${esc(m.player || m.name)}" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">`
+        : '';
+      const playerSpan = m.player ? `<span class="al-member-player">@${esc(m.player)}</span>` : '';
+
+      return `
+        <span class="al-member-chip" title="${esc(m.name)}${m.player ? ' · @' + esc(m.player) : ''}" onclick="event.stopPropagation(); window.openCountryModal('${esc(m.name)}')">
+          ${renderFlag(m.flag, m.name)}
+          ${memberAvaHtml}
+          <span class="al-member-name">${esc(m.name)}</span>
+          ${playerSpan}
+        </span>
+      `;
+    }).join('');
 
     const gdpStr = al.totalGdp > 0 ? ('$' + fmtNum(al.totalGdp)) : '—';
     const popStr = al.totalPop > 0 ? fmtNum(al.totalPop) : '—';
@@ -285,13 +320,13 @@ export function renderSeasonAlliancesCards(alliancesList) {
             <b>${popStr}</b>
           </div>
           <div class="al-stat">
-            <span>Участников</span>
+            <span>Держав</span>
             <b>${al.members.length}</b>
           </div>
         </div>
 
         <div class="al-members-preview">
-          <span class="al-label">Состав:</span>
+          <span class="al-label">Состав союза:</span>
           <div class="al-members-wrap">${membersFlagsHtml}</div>
         </div>
 
@@ -354,11 +389,16 @@ export function openAllianceModal(allianceName) {
   if (nameEl) nameEl.textContent = al.name + ' · ' + al.fullName;
   if (subEl) subEl.textContent = `${al.type} альянс · Сезон 31`;
 
+  const leaderAvaHtml = al.leaderAvatar
+    ? `<img src="${al.leaderAvatar}" class="al-leader-ava" style="width:20px;height:20px;border-radius:50%;object-fit:cover;" alt="">`
+    : '';
+
   if (statusEl) {
     statusEl.innerHTML = `
       <div class="al-modal-leader-chip">
         <span class="crown-badge">ПРЕДСЕДАТЕЛЬСТВО</span>
         ${renderFlag(al.leaderFlag, al.leaderCountry)}
+        ${leaderAvaHtml}
         <b>${esc(al.leaderCountry)}</b>
         ${al.leaderPlayer ? `<span class="player-sub">(@${esc(al.leaderPlayer)})</span>` : ''}
       </div>
@@ -383,17 +423,22 @@ export function openAllianceModal(allianceName) {
 
   addRow('Официальное название', esc(al.fullName));
   addRow('Классификация союза', esc(al.type));
-  addRow('Страна-учредитель / Лидер', `<span class="al-lead-row">${renderFlag(al.leaderFlag, al.leaderCountry)} <span>${esc(al.leaderCountry)}</span></span>`);
+  addRow('Страна-учредитель / Лидер', `<span class="al-lead-row">${renderFlag(al.leaderFlag, al.leaderCountry)} ${leaderAvaHtml} <span>${esc(al.leaderCountry)}</span></span>`);
 
   // Участники
   if (al.members && al.members.length) {
-    const membersListHtml = al.members.map(m => `
-      <span class="al-modal-member-pill" onclick="closeAllianceModal(); window.openCountryModal('${esc(m.name)}')">
-        ${renderFlag(m.flag, m.name)}
-        <span>${esc(m.name)}</span>
-        ${m.isLeader ? '<span class="crown-mark">лидер</span>' : ''}
-      </span>
-    `).join('');
+    const membersListHtml = al.members.map(m => {
+      const avaHtml = m.avatar ? `<img src="${m.avatar}" class="al-member-ava" style="width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:middle;margin:0 4px;" alt="">` : '';
+      return `
+        <span class="al-modal-member-pill" onclick="closeAllianceModal(); window.openCountryModal('${esc(m.name)}')">
+          ${renderFlag(m.flag, m.name)}
+          ${avaHtml}
+          <span>${esc(m.name)}</span>
+          ${m.player ? `<span class="al-member-player">(@${esc(m.player)})</span>` : ''}
+          ${m.isLeader ? '<span class="crown-mark">лидер</span>' : ''}
+        </span>
+      `;
+    }).join('');
     detailsHtml += `
       <div class="kv-block">
         <span class="kv-block-title">Государства-участники (${al.members.length}):</span>

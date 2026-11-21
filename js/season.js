@@ -1,9 +1,9 @@
 /**
  * season.js - Модуль сезона: карточки стран с FlagCDN, модальные окна и адаптация данных
  */
-import { esc, fmtNum, trimDeep, normName } from './utils.js';
+import { esc, fmtNum, trimDeep, normName, defaultAvatar } from './utils.js';
 import { SPEC_NAMES, API_BASE } from './config.js';
-import { playerMeta } from './auth.js';
+import { playerMeta, loadPlayers, getPlayers } from './auth.js';
 import { countUpAll, getMapInfo } from './stats.js';
 import { refreshOdysseyElements } from './animations.js';
 import { computeAlliancesData, renderSeasonAlliancesCards, setCachedAlliancesData } from './alliances.js';
@@ -554,6 +554,9 @@ export async function loadSeason() {
   if (!body) return;
 
   try {
+    try {
+      await loadPlayers();
+    } catch (_) {}
     const [seasonRaw, countriesRaw] = await fetchSeasonData();
     const C = trimDeep(countriesRaw), S = trimDeep(seasonRaw);
     SEASON_DATA_STORE = {};
@@ -688,6 +691,40 @@ export async function loadSeason() {
     setCachedAlliancesData(alliancesList);
     const alliancesHtml = renderSeasonAlliancesCards(alliancesList);
 
+    // Действующие участники сезона с Discord-аватарками
+    const activeParticipants = [...states, ...orgs, ...autos].filter(p => p.playerId);
+    const playersCardsHtml = activeParticipants.map(item => {
+      const pm = playerMeta(item.playerId);
+      const username = (pm && pm.name) || item.data?.player || 'Участник';
+      const avatar = (pm && pm.avatar) || defaultAvatar(item.playerId);
+      const roles = (item.data?.roles || []).map(r => (typeof r === 'string' ? r : r.name || '')).filter(Boolean);
+      const allianceRoles = roles.filter(r => r.startsWith('Лидер: ') || ['ОДТО', 'ТЭС', 'НАТО', 'ЕС', 'ШОС', 'БРИКС', 'Ось Сопротивления', 'ОДКБ', 'СНГ'].includes(r));
+      const badges = allianceRoles.slice(0, 2).map(r => {
+        const isL = r.startsWith('Лидер: ');
+        const clean = isL ? r.replace('Лидер: ', '👑 ') : r;
+        return `<span class="sp-role-badge ${isL ? 'leader' : ''}">${esc(clean)}</span>`;
+      }).join('');
+
+      return `
+        <div class="season-player-card" onclick="window.openCountryModal('${esc(item.key)}')">
+          <div class="sp-avatar-box">
+            <img src="${esc(avatar)}" alt="${esc(username)}" loading="lazy" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+          </div>
+          <div class="sp-info">
+            <div class="sp-name-row">
+              <span class="sp-username" title="${esc(username)}">@${esc(username)}</span>
+            </div>
+            <div class="sp-country-row">
+              ${item.flagHtml}
+              <span>${esc(item.name)}</span>
+              <span style="opacity:0.6">· ${esc(item.typeLabel)}</span>
+            </div>
+            ${badges ? `<div class="sp-roles-row">${badges}</div>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
     // Синхронизируем показатели сводки Сезона 31 на главной странице
     if (states.length > 0 || orgs.length > 0 || autos.length > 0) {
       countUpAll('countries', states.length);
@@ -699,6 +736,9 @@ export async function loadSeason() {
     body.innerHTML = `
       <div class="sec-title"><svg class="ic"><use href="#i-shield"/></svg>ВОЕННО-ПОЛИТИЧЕСКИЕ И ЭКОНОМИЧЕСКИЕ АЛЬЯНСЫ <span class="sec-counter">${alliancesList.length}</span></div>
       <div class="grid-3 season-grid" style="margin-bottom:28px">${alliancesHtml}</div>
+
+      <div class="sec-title"><svg class="ic"><use href="#i-users"/></svg>ДЕЙСТВУЮЩИЕ УЧАСТНИКИ СЕЗОНА 31 <span class="sec-counter">${activeParticipants.length}</span></div>
+      <div class="season-players-grid">${playersCardsHtml}</div>
 
       <div class="sec-title"><svg class="ic"><use href="#i-globe"/></svg>ГОСУДАРСТВА <span class="sec-counter">${states.length}</span></div>
       <div class="grid-3 season-grid">${states.map(seasonCard).join('') || '<p class="loading">В текущий момент нет активных регистраций государств.</p>'}</div>
