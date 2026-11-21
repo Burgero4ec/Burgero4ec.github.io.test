@@ -865,7 +865,7 @@ div.scene-tooltip {
                   <option value="data/seasons/season-26.json">data/seasons/season-26.json (Сезон 26)</option>
                   <option value="data/seasons/season-25.json">data/seasons/season-25.json (Сезон 25)</option>
                   <option value="countries2014.json">countries2014.json (2014 База)</option>
-                  <option value="custom">📁 Выбрать файл...</option>
+                  <option value="custom">Выбрать локальный файл...</option>
                 </select>
               </div>
               <input type="file" id="globeCustomFileInput" accept=".json" style="display:none">
@@ -922,7 +922,7 @@ div.scene-tooltip {
                 </svg>
               </button>
               <button class="country-dossier-btn" id="cardAllianceDossierBtn" style="display:none;margin-top:6px;background:rgba(6,182,212,0.12);border-color:#06b6d4;color:#06b6d4">
-                <span>🛡️ Досье альянса</span>
+                <span>Досье альянса</span>
               </button>
             </div>
           </div>
@@ -943,8 +943,8 @@ div.scene-tooltip {
               <button class="l-pill gray" data-faction="Нейтралитет" title="Вне блоков"><span class="dot"></span> Нейтралы</button>
             </div>
             <div class="viewer-bottom-controls">
-              <button class="globe-ctrl-btn active" id="globeRotateToggle" title="Включить / остановить авто-вращение">⏸ Вращение</button>
-              <button class="globe-ctrl-btn" id="globeResetCamera" title="Вернуть ракурс на центр">⟲ Сброс</button>
+              <button class="globe-ctrl-btn active" id="globeRotateToggle" title="Включить или остановить авто-вращение">Вращение</button>
+              <button class="globe-ctrl-btn" id="globeResetCamera" title="Вернуть ракурс на центр">Сброс</button>
               <span class="viewer-hint-text">Вращайте глобус · колесо — зум · клик по стране для досье</span>
             </div>
           </div>
@@ -1306,9 +1306,9 @@ div.scene-tooltip {
           <button id="shameSearchClear" class="shame-clear-btn" aria-label="Очистить поиск" style="display:none">✕</button>
         </div>
         <div class="shame-filter-tabs" id="shameFilterTabs">
-          <button class="shame-tab-btn active" data-filter="all">⚡ Все (200)</button>
-          <button class="shame-tab-btn" data-filter="caucasus">🏔️ Кавказская Республика (1–100)</button>
-          <button class="shame-tab-btn" data-filter="rusich">🛡️ БРН «Русич» (101–200)</button>
+          <button class="shame-tab-btn active" data-filter="all">Все (200)</button>
+          <button class="shame-tab-btn" data-filter="caucasus">Кавказская Республика (1–100)</button>
+          <button class="shame-tab-btn" data-filter="rusich">БРН «Русич» (101–200)</button>
         </div>
       </div>
 
@@ -1374,16 +1374,15 @@ div.scene-tooltip {
               <span class="word highlighted">игру</span>
             </div>
             <div class="falling-hint">
-              <span class="hint-icon">⚡</span>
-              <span class="hint-text">наведи курсор — слова упадут</span>
+              <span class="hint-text">Наведите курсор для взаимодействия с физикой слов</span>
             </div>
             <canvas class="falling-fx-canvas" id="fallingFxCanvas"></canvas>
           </div>
         </div>
 
         <div class="update-content">
-          <div class="donate-section-title" style="font-family:'JetBrains Mono',monospace;font-size:13.5px;color:#4ade80;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
-            <span>📋</span> ДОСТУПНЫЕ УСЛУГИ (БРОНИРОВАНИЕ)
+          <div class="donate-section-title" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4ade80;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+            <span class="dot" style="width:6px;height:6px;background:#4ade80;border-radius:50%;"></span> Доступные услуги бронирования
           </div>
           <ul class="dc-list">
             <li>Бронирование слабой страны — <strong>150 кредитов</strong></li>
@@ -1392,8 +1391,8 @@ div.scene-tooltip {
             <li>Бронирование ядерной страны — <strong>800 кредитов</strong></li>
           </ul>
 
-          <div class="donate-section-title" style="font-family:'JetBrains Mono',monospace;font-size:13.5px;color:#fbbf24;font-weight:700;margin:18px 0 8px;display:flex;align-items:center;gap:6px;">
-            <span>💡</span> ЭКОНОМИЧЕСКИЙ ОБМЕН (!credit_gdp)
+          <div class="donate-section-title" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#fbbf24;font-weight:600;margin:18px 0 8px;display:flex;align-items:center;gap:6px;">
+            <span class="dot" style="width:6px;height:6px;background:#fbbf24;border-radius:50%;"></span> Экономический обмен (!credit_gdp)
           </div>
           <div class="small-text" style="margin-bottom:8px;color:#cbd5e1;">Вы можете обменять кредиты на бюджетные средства через команду <code>!credit_gdp</code>:</div>
           <ul class="dc-list">
@@ -1401,10 +1400,10 @@ div.scene-tooltip {
             <li>ЧВК / Организации: <strong>1 кредит = 0.02% от ВВП страны базирования</strong></li>
           </ul>
 
-          <div class="donate-section-title" style="font-family:'JetBrains Mono',monospace;font-size:13.5px;color:#f87171;font-weight:700;margin:18px 0 8px;display:flex;align-items:center;gap:6px;">
-            <span>📌</span> ВАЖНАЯ ИНФОРМАЦИЯ
+          <div class="donate-section-title" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#f87171;font-weight:600;margin:18px 0 8px;display:flex;align-items:center;gap:6px;">
+            <span class="dot" style="width:6px;height:6px;background:#f87171;border-radius:50%;"></span> Условия бронирования
           </div>
-          <div class="small-text" style="color:#94a3b8;font-style:italic;line-height:1.55;background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:8px;border-left:3px solid #f87171;">
+          <div class="small-text" style="color:#94a3b8;line-height:1.55;background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:8px;border-left:3px solid #f87171;">
             По всем вопросам касательно бронирования — обращайтесь в поддержку к руководству или непосредственно в поддержку на бронирования, если это происходит во время процесса бронирования.
           </div>
 
@@ -1509,9 +1508,9 @@ div.scene-tooltip {
           <select id="archSeason" class="arch-select"></select>
           <select id="archKind" class="arch-select">
             <option value="all">Все файлы</option>
-            <option value="countries">📺 Новости стран</option>
-            <option value="orgs">👥 Новости организаций</option>
-            <option value="events">🗽 События</option>
+            <option value="countries">Новости стран</option>
+            <option value="orgs">Новости организаций</option>
+            <option value="events">События</option>
           </select>
           <div class="order-toggle" data-for="archives" style="margin:0">
             <button data-order="desc" class="active">↓ Новые сверху</button>

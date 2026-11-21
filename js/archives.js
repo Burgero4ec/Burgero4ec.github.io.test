@@ -7,9 +7,9 @@ import { refreshOdysseyElements } from './animations.js';
 
 export const ARCHIVE_SEASONS = [24, 23, 22, 21, 20, 19, 3, 2, 1];
 export const ARCHIVE_KINDS = [
-  { id: 'countries', emoji: '📺', label: 'Новости стран и автономий' },
-  { id: 'orgs',      emoji: '👥', label: 'Новости организаций' },
-  { id: 'events',    emoji: '🗽', label: 'События' }
+  { id: 'countries', label: 'Новости стран и автономий' },
+  { id: 'orgs',      label: 'Новости организаций' },
+  { id: 'events',    label: 'События' }
 ];
 
 const archiveCache = new Map();
@@ -82,11 +82,11 @@ export function renderArchFolders() {
 
   el.innerHTML = ARCHIVE_SEASONS.map(s => `
     <div class="folder ${String(archState.season) === String(s) ? 'active' : ''}">
-      <h3>📁 Сезон ${s}</h3>
+      <h3><span class="dot" style="display:inline-block;width:6px;height:6px;background:var(--acc);border-radius:50%;margin-right:8px;vertical-align:middle;"></span>Сезон ${s}</h3>
       <div class="folder-files">
         ${ARCHIVE_KINDS.map(k => `
           <button class="folder-file ${String(archState.season) === String(s) && (archState.kind === k.id || archState.kind === 'all') ? 'selected' : ''}" data-season="${s}" data-kind="${k.id}">
-            ${k.emoji} ${k.label}
+            <span>${k.label}</span>
           </button>
         `).join('')}
       </div>

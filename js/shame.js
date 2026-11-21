@@ -30,12 +30,12 @@ export const PERSONA_CONFIGS = {
     statusColor: '#ef4444',
     glowColor: 'rgba(239, 68, 68, 0.15)',
     cardBorder: 'rgba(239, 68, 68, 0.3)',
-    avatarRing: 'conic-gradient(from 0deg, #ef4444, #eab308, #ef4444, #f97316, #ef4444)',
+    avatarRing: 'rgba(239, 68, 68, 0.45)',
     badges: [
-      { class: 'badge-admin', icon: '#i-crown', text: 'АДМИНИСТРАТОР' },
-      { class: 'badge-ludik', text: '🎰 ГЛАВНЫЙ ЛУДИК' },
-      { class: 'badge-cart', icon: '#i-compass', text: 'КАРТОГРАФ' },
-      { class: 'badge-record', text: '💀 200 СТАТЕЙ И НАГРАД' }
+      { class: 'badge-admin', icon: '#i-crown', text: 'Администратор' },
+      { class: 'badge-ludik', text: 'Главный лудик' },
+      { class: 'badge-cart', icon: '#i-compass', text: 'Картограф' },
+      { class: 'badge-record', text: '200 статей и наград' }
     ],
     bio: 'Легендарный администратор проекта и бессменный покоритель рулеток Global Luds. Известен тактическими рейдами в тапочках, утерей плащ-палаток в бою, переговорами с пальмами и раздачей конфет сиротам перед телекамерами. За время службы удостоился 200 орденов, медалей и курьёзных знаков отличия в Кавказской Горской Республике и БРН «Русич».',
     quoteTitle: 'ГЛАВНЫЙ ДЕВИЗ И ВЕРДИКТ:',
@@ -77,12 +77,12 @@ export const PERSONA_CONFIGS = {
     statusColor: '#06b6d4',
     glowColor: 'rgba(6, 182, 212, 0.18)',
     cardBorder: 'rgba(6, 182, 212, 0.35)',
-    avatarRing: 'conic-gradient(from 0deg, #06b6d4, #3b82f6, #a855f7, #06b6d4, #22d3ee)',
+    avatarRing: 'rgba(6, 182, 212, 0.45)',
     badges: [
-      { class: 'badge-creator', icon: '#i-code', text: 'СОЗДАТЕЛЬ САЙТА' },
-      { class: 'badge-deputy', icon: '#i-shield', text: 'ЗАМ. РУКОВОДСТВА' },
-      { class: 'badge-debug', text: '⚡ МАСТЕР OPACITY: 0' },
-      { class: 'badge-record', text: '🍔 21 КУРЬЁЗ В MAIN' }
+      { class: 'badge-creator', icon: '#i-code', text: 'Создатель сайта' },
+      { class: 'badge-deputy', icon: '#i-shield', text: 'Зам. руководства' },
+      { class: 'badge-debug', text: 'Мастер opacity: 0' },
+      { class: 'badge-record', text: '21 курьёз в main' }
     ],
     bio: 'Создатель и архитектор официального веб-портала Global Lens. Человек, связавший воедино интерактивный 3D-глобус, экономику 28-го сезона, газетные архивы и секретный бункер CS2. По персональной просьбе Понза добровольно явился на собственную Доску Позора, увековечив легендарную битву с 15 !important, исчезающий текст и войну с авто-ботом за players.json.',
     quoteTitle: 'ГЛАВНЫЙ ДЕВИЗ И ВЕРДИКТ:',
@@ -95,9 +95,9 @@ export const PERSONA_CONFIGS = {
     ],
     searchPlaceholder: 'Поиск по курьёзам (opacity: 0, навбар, Odyssey, CS2, players.json)...',
     tabs: [
-      { id: 'all', label: '⚡ Все (21)' },
-      { id: 'front', label: '💻 Фронтенд и CSS (1–10)' },
-      { id: 'git', label: '🚀 Git и Прод (11–20)' }
+      { id: 'all', label: 'Все (21)' },
+      { id: 'front', label: 'Фронтенд и CSS (1–10)' },
+      { id: 'git', label: 'Git и Прод (11–20)' }
     ],
     filterItem: (item, filter) => {
       if (filter === 'front') return item.id >= 1 && item.id <= 10;
@@ -124,12 +124,12 @@ export const PERSONA_CONFIGS = {
     statusColor: '#f59e0b',
     glowColor: 'rgba(245, 158, 11, 0.18)',
     cardBorder: 'rgba(245, 158, 11, 0.35)',
-    avatarRing: 'conic-gradient(from 0deg, #f59e0b, #ef4444, #3b82f6, #10b981, #f59e0b)',
+    avatarRing: 'rgba(245, 158, 11, 0.45)',
     badges: [
-      { class: 'badge-admin', icon: '#i-crown', text: 'ОСНОВАТЕЛЬ СЕРВЕРА' },
-      { class: 'badge-vibecode', text: '⚡ ВЕЛИКИЙ ВАЙБКОДЕР' },
-      { class: 'badge-bot', icon: '#i-wrench', text: 'СОЗДАТЕЛЬ БОТА' },
-      { class: 'badge-record', text: '📉 30 ЭПИЧЕСКИХ ГРЕХОВ' }
+      { class: 'badge-admin', icon: '#i-crown', text: 'Основатель сервера' },
+      { class: 'badge-vibecode', text: 'Архитектор бота' },
+      { class: 'badge-bot', icon: '#i-wrench', text: 'Разработчик' },
+      { class: 'badge-record', text: '30 курьёзных хроник' }
     ],
     bio: 'Основатель, Священный Император и Отец Сервера Global Lens RP. Создатель всемогущего бота, тянущего на себе всю механику сервера. Главный виртуоз вайбкодинга прямо на живых игроках, виновник мутов за падение доходов, создатель налога 25% и напутствия «Успешной игры». Добровольно явился на Стену Позора!',
     quoteTitle: 'ГЛАВНЫЙ ДЕВИЗ И ВЕРДИКТ:',
@@ -142,10 +142,10 @@ export const PERSONA_CONFIGS = {
     ],
     searchPlaceholder: 'Поиск по грехам (вайбкодинг, доходы, комиссия 25%, бот, ГЭС)...',
     tabs: [
-      { id: 'all', label: '⚡ Все (30)' },
-      { id: 'dev', label: '💻 Вайбкодинг (1–10)' },
-      { id: 'economy', label: '📉 Экономика (11–20)' },
-      { id: 'emperor', label: '👑 Священный Император (21–30)' }
+      { id: 'all', label: 'Все (30)' },
+      { id: 'dev', label: 'Вайбкодинг (1–10)' },
+      { id: 'economy', label: 'Экономика (11–20)' },
+      { id: 'emperor', label: 'Священный Император (21–30)' }
     ],
     filterItem: (item, filter) => {
       if (filter === 'dev') return item.id >= 1 && item.id <= 10;
@@ -174,12 +174,12 @@ export const PERSONA_CONFIGS = {
     statusColor: '#c084fc',
     glowColor: 'rgba(168, 85, 247, 0.2)',
     cardBorder: 'rgba(168, 85, 247, 0.35)',
-    avatarRing: 'conic-gradient(from 0deg, #a855f7, #ec4899, #8b5cf6, #3b82f6, #a855f7)',
+    avatarRing: 'rgba(168, 85, 247, 0.45)',
     badges: [
-      { class: 'badge-deputy', icon: '#i-shield', text: 'ЗАМ. КУРАТОРА' },
-      { class: 'badge-scale', icon: '#i-scale', text: '⚖️ ОПРАВДАН СУДОМ' },
-      { class: 'badge-record', text: '📜 200 СТАТЕЙ ТРИБУНАЛА' },
-      { class: 'badge-medal', icon: '#i-star', text: '🎖️ МЕДАЛЬ ЗА ОБОРОНУ' }
+      { class: 'badge-deputy', icon: '#i-shield', text: 'Зам. куратора' },
+      { class: 'badge-scale', icon: '#i-scale', text: 'Оправдан судом' },
+      { class: 'badge-record', text: '200 статей трибунала' },
+      { class: 'badge-medal', icon: '#i-star', text: 'Медаль за оборону' }
     ],
     bio: 'Легендарный бывший зам. куратора политологов. Прошёл через беспрецедентный судебный процесс из 200 тяжелейших статей трибунала и был полностью оправдан верховным судом проекта. Однако главную битву проиграл в реале: ушёл из проекта, пав смертью храбрых при обороне от отношений с девушкой.',
     quoteTitle: 'ГЛАВНЫЙ ДЕВИЗ И ВЕРДИКТ:',
@@ -192,9 +192,9 @@ export const PERSONA_CONFIGS = {
     ],
     searchPlaceholder: 'Поиск по статьям и наградам (геноцид, скот, оборона, мигрант)...',
     tabs: [
-      { id: 'all', label: '⚡ Все (201)' },
-      { id: 'tribunal', label: '⚖️ Трибунал (1–200)' },
-      { id: 'medal', label: '🎖️ Медаль (201)' }
+      { id: 'all', label: 'Все (201)' },
+      { id: 'tribunal', label: 'Трибунал (1–200)' },
+      { id: 'medal', label: 'Медаль (201)' }
     ],
     filterItem: (item, filter) => {
       if (filter === 'tribunal') return item.id >= 1 && item.id <= 200;

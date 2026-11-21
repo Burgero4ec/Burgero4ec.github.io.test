@@ -297,10 +297,10 @@ export function renderSeasonAlliancesCards(alliancesList) {
 
         <div class="al-card-footer">
           <button class="al-btn-dossier" onclick="event.stopPropagation(); window.openAllianceModal('${esc(al.name)}')">
-            <span>📋 Досье блока</span>
+            <span>Досье блока</span>
           </button>
           <button class="al-btn-globe" onclick="event.stopPropagation(); window.showAllianceOnGlobe('${esc(al.name)}')">
-            <span>🌍 На глобус</span>
+            <span>На глобус</span>
           </button>
         </div>
       </div>
@@ -357,7 +357,7 @@ export function openAllianceModal(allianceName) {
   if (statusEl) {
     statusEl.innerHTML = `
       <div class="al-modal-leader-chip">
-        <span class="crown-badge">👑 ПРЕДСЕДАТЕЛЬСТВО</span>
+        <span class="crown-badge">ПРЕДСЕДАТЕЛЬСТВО</span>
         ${renderFlag(al.leaderFlag, al.leaderCountry)}
         <b>${esc(al.leaderCountry)}</b>
         ${al.leaderPlayer ? `<span class="player-sub">(@${esc(al.leaderPlayer)})</span>` : ''}
@@ -391,7 +391,7 @@ export function openAllianceModal(allianceName) {
       <span class="al-modal-member-pill" onclick="closeAllianceModal(); window.openCountryModal('${esc(m.name)}')">
         ${renderFlag(m.flag, m.name)}
         <span>${esc(m.name)}</span>
-        ${m.isLeader ? '<span class="crown-mark">👑</span>' : ''}
+        ${m.isLeader ? '<span class="crown-mark">лидер</span>' : ''}
       </span>
     `).join('');
     detailsHtml += `
@@ -416,7 +416,7 @@ export function openAllianceModal(allianceName) {
   detailsHtml += `
     <div style="margin-top:18px;text-align:center">
       <button class="country-dossier-btn al-globe-jump-btn" onclick="window.showAllianceOnGlobe('${esc(al.name)}')">
-        <span>🌍 Показать блок ${esc(al.name)} на 3D глобусе</span>
+        <span>Показать блок ${esc(al.name)} на 3D глобусе</span>
       </button>
     </div>
   `;
