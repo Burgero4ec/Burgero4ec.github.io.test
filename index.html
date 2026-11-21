@@ -4,11 +4,44 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>
-// Автоматический base href для корректной работы как на основном домене, так и на подкаталогах GitHub Pages
+// Защита от спам-зеркал, прокси-скраперов (напр. narimorikarozento.click) и кликджекинга
 (function() {
+  try {
+    // 1. Защита от встраивания в чужие iframe (Anti-Clickjacking / Framebuster)
+    if (window.top !== window.self) {
+      window.top.location = window.self.location;
+    }
+  } catch (e) {
+    try { window.location.replace('https://global-lens.xyz/'); } catch (_) {}
+  }
+
+  try {
+    var host = (window.location.hostname || '').toLowerCase();
+    // Разрешенные доверенные домены:
+    // - Официальный домен: global-lens.xyz и www.global-lens.xyz
+    // - GitHub Pages репозитории (*.github.io)
+    // - Локальная разработка: localhost, 127.0.0.1, локальные сети
+    var isAllowed = !host ||
+      host === 'global-lens.xyz' ||
+      host === 'www.global-lens.xyz' ||
+      host.endsWith('.github.io') ||
+      host === 'localhost' ||
+      host === '127.0.0.1' ||
+      host.endsWith('.local') ||
+      /^192\.168\./.test(host) ||
+      /^10\./.test(host);
+
+    // Если сайт загружен через чужой домен-паразит / реверс-прокси
+    if (!isAllowed) {
+      var target = 'https://global-lens.xyz' + window.location.pathname + window.location.search + window.location.hash;
+      window.location.replace(target);
+    }
+  } catch (err) {}
+
+  // Автоматический base href для корректной работы как на основном домене, так и на подкаталогах GitHub Pages
   var p = window.location.pathname;
-  var host = window.location.hostname;
-  if (host.endsWith('github.io')) {
+  var h = window.location.hostname;
+  if (h && h.endsWith('github.io')) {
     var segs = p.split('/').filter(Boolean);
     if (segs.length > 0 && !segs[0].endsWith('.html') && !segs[0].endsWith('.php')) {
       document.write('<base href="/' + segs[0] + '/">');

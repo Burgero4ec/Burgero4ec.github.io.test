@@ -3,6 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// Защита от спам-зеркал и кликджекинга
+(function() {
+  try {
+    if (window.top !== window.self) { window.top.location = window.self.location; }
+  } catch (e) {
+    try { window.location.replace('https://global-lens.xyz/'); } catch (_) {}
+  }
+  try {
+    var host = (window.location.hostname || '').toLowerCase();
+    var isAllowed = !host ||
+      host === 'global-lens.xyz' ||
+      host === 'www.global-lens.xyz' ||
+      host.endsWith('.github.io') ||
+      host === 'localhost' ||
+      host === '127.0.0.1' ||
+      host.endsWith('.local') ||
+      /^192\.168\./.test(host) ||
+      /^10\./.test(host);
+    if (!isAllowed) {
+      window.location.replace('https://global-lens.xyz' + window.location.pathname + window.location.search + window.location.hash);
+    }
+  } catch (err) {}
+})();
+</script>
 <title>Условия использования // Terms of Service — Global Lens RP</title>
 <base href="/">
 <meta name="description" content="Условия использования Discord-бота и веб-сервисов проекта Global Lens RP.">
