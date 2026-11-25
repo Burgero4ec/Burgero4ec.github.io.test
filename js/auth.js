@@ -163,9 +163,9 @@ export async function handleLogin() {
   // сразу же отображаем имя и аватар без ожидания сети
   try {
     const source = localStorage.getItem('gl-auth-source');
-    const token = localStorage.getItem('gl-discord-token');
+    const token = sessionStorage.getItem('gl-discord-token') || localStorage.getItem('gl-discord-token');
     const savedStr = localStorage.getItem('gl-user');
-    if (source === 'discord-oauth' && token && savedStr) {
+    if (source === 'discord-oauth' && savedStr) {
       const saved = JSON.parse(savedStr);
       if (saved && saved.id) {
         window.glUser = saved;
@@ -194,7 +194,8 @@ export async function handleLogin() {
         console.warn('[Global Lens Security] Отклонен access_token с несовпадающим state (защита от Login CSRF).');
       } else {
         try {
-          localStorage.setItem('gl-discord-token', token);
+          sessionStorage.setItem('gl-discord-token', token);
+          localStorage.removeItem('gl-discord-token'); // Не храним токен в персистентном localStorage
         } catch (e) {}
       }
     }
@@ -208,7 +209,8 @@ export async function handleLogin() {
   // 4. Фоновая верификация токена через Discord API без блокировки рендеринга страницы
   let dToken = null;
   try {
-    dToken = localStorage.getItem('gl-discord-token');
+    dToken = sessionStorage.getItem('gl-discord-token') || localStorage.getItem('gl-discord-token');
+    localStorage.removeItem('gl-discord-token');
   } catch (e) {}
 
   if (dToken) {
@@ -229,6 +231,7 @@ export async function handleLogin() {
         localStorage.setItem('gl-user', JSON.stringify(window.glUser));
         localStorage.setItem('gl-auth-source', 'discord-oauth');
       } else {
+        sessionStorage.removeItem('gl-discord-token');
         localStorage.removeItem('gl-discord-token');
         localStorage.removeItem('gl-user');
         localStorage.removeItem('gl-auth-source');
@@ -262,6 +265,7 @@ export async function handleLogin() {
 
 export function discordLogout() {
   localStorage.removeItem('gl-user');
+  sessionStorage.removeItem('gl-discord-token');
   localStorage.removeItem('gl-discord-token');
   localStorage.removeItem('gl-auth-source');
   localStorage.removeItem('gl-session');

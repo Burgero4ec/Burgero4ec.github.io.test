@@ -105,7 +105,10 @@ export async function loadUpdates() {
   const el = document.getElementById('updatesBody');
   if (!el) return;
   try {
-    const r = await fetch(GH_URLS.updates);
+    let r = await fetch(GH_URLS.updates);
+    if (!r.ok && GH_URLS.updatesFallback) {
+      r = await fetch(GH_URLS.updatesFallback);
+    }
     if (!r.ok) throw new Error('HTTP ' + r.status);
     cache.updates = parseMessages(new DOMParser().parseFromString(await r.text(), 'text/html'));
     rerender('updates');

@@ -3,9 +3,12 @@
  */
 
 export const GH_URLS = {
-  updates: 'https://raw.githubusercontent.com/Burgero4ec/Burgero4ec.github.io/refs/heads/main/Archive_%F0%9F%93%94%E3%83%BB%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F.html',
-  bot: 'https://raw.githubusercontent.com/AytacOnan2/ToS-and-Privacy-Policy-Global-Lens-Bot/main/TERMS_OF_SERVICE.md',
-  privacy: 'https://raw.githubusercontent.com/AytacOnan2/ToS-and-Privacy-Policy-Global-Lens-Bot/main/PRIVACY_POLICY.md'
+  updates: 'Archive_%F0%9F%93%94%E3%83%BB%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F.html',
+  updatesFallback: 'https://raw.githubusercontent.com/Burgero4ec/Burgero4ec.github.io/refs/heads/main/Archive_%F0%9F%93%94%E3%83%BB%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F.html',
+  bot: 'data/rules_bot.md',
+  privacy: 'data/rules_privacy.md',
+  botFallback: 'https://raw.githubusercontent.com/AytacOnan2/ToS-and-Privacy-Policy-Global-Lens-Bot/main/TERMS_OF_SERVICE.md',
+  privacyFallback: 'https://raw.githubusercontent.com/AytacOnan2/ToS-and-Privacy-Policy-Global-Lens-Bot/main/PRIVACY_POLICY.md'
 };
 
 export const API_BASE = '';

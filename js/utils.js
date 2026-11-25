@@ -63,9 +63,20 @@ export function userAvatar(u) {
 }
 
 export function safeUrl(url) {
-  const t = String(url || '').trim().toLowerCase();
-  if (t.startsWith('javascript:') || t.startsWith('data:') || t.startsWith('vbscript:')) return '#';
-  if (t.startsWith('http://') || t.startsWith('https://') || t.startsWith('/') || t.startsWith('#')) return url;
+  if (!url || typeof url !== 'string') return '#';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('#')) return trimmed;
+  // Защита от protocol-relative URL (//evil.com) и обходов через обратный слэш
+  if (trimmed.startsWith('//') || trimmed.startsWith('/\\') || trimmed.startsWith('\\')) return '#';
+  if (trimmed.startsWith('/')) return trimmed;
+  try {
+    const parsed = new URL(trimmed, window.location.origin);
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+      return parsed.href;
+    }
+  } catch (e) {
+    return '#';
+  }
   return '#';
 }
 

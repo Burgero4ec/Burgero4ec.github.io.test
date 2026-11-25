@@ -222,6 +222,8 @@ async function ensureMatterLibrary() {
     }
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js';
+    script.crossOrigin = 'anonymous';
+    script.integrity = 'sha384-OqQP3UcU7efkEYDRjGmQou2uEvzGFGRtwdYXTjnupeB9cWogSgQ4BOhyklFBYbBR';
     script.onload = () => resolve();
     script.onerror = (e) => {
       console.warn('[Donate] CDN matter.js failed to load:', e);
