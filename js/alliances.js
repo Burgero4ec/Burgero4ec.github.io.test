@@ -413,14 +413,14 @@ export function renderSeasonAlliancesCards(alliancesList) {
         : '';
       const playerSpan = m.player
         ? `<span class="al-member-player">@${esc(m.player)}</span>`
-        : `<span class="al-member-free">свободна</span>`;
+        : '';
 
       const crownBadge = (m.isLeader && succ.status === 'acting')
         ? '<span class="al-chip-crown" title="Действующее председательство (преемник)">👑</span>'
         : '';
 
       return `
-        <span class="al-member-chip ${m.player ? 'is-occupied' : 'is-vacant'}" title="${esc(m.name)}${m.player ? ' · @' + esc(m.player) : ' (Свободная страна)'}" onclick="event.stopPropagation(); window.openCountryModal('${esc(m.name)}')">
+        <span class="al-member-chip ${m.player ? 'is-occupied' : 'is-vacant'}" title="${esc(m.name)}${m.player ? ' · @' + esc(m.player) : ''}" onclick="event.stopPropagation(); window.openCountryModal('${esc(m.name)}')">
           ${renderFlag(m.flag, m.name)}
           ${memberAvaHtml}
           <span class="al-member-name">${esc(m.name)}</span>
@@ -436,14 +436,17 @@ export function renderSeasonAlliancesCards(alliancesList) {
     return `
       <div class="c-card alliance-card" style="--al-color:${al.color}" onclick="window.openAllianceModal('${esc(al.name)}')">
         <div class="al-card-head">
-          <div class="al-head-left">
-            <span class="al-icon">${al.icon}</span>
-            <div style="min-width: 0; flex: 1;">
-              <div class="al-title">${esc(al.name)} <span class="al-tag">(${esc(al.tag)})</span></div>
-              <div class="al-full-name" title="${esc(al.fullName)}">${esc(al.fullName)}</div>
+          <div class="al-head-top">
+            <div class="al-head-left">
+              <span class="al-icon">${al.icon}</span>
+              <div class="al-title-box">
+                <span class="al-title">${esc(al.name)}</span>
+                <span class="al-tag">(${esc(al.tag)})</span>
+              </div>
             </div>
+            <span class="al-type-badge al-type-${al.pillClass}" title="${esc(al.type)}">${esc(al.type)}</span>
           </div>
-          <span class="al-type-badge al-type-${al.pillClass}">${esc(al.type)}</span>
+          <div class="al-full-name" title="${esc(al.fullName)}">${esc(al.fullName)}</div>
         </div>
 
         <div class="al-leader-row">
@@ -610,14 +613,14 @@ export function openAllianceModal(allianceName) {
       const crownMark = m.isLeader
         ? (succ.status === 'acting' ? '<span class="crown-mark" style="background:#f59e0b;color:#000;">и.о. главы</span>' : '<span class="crown-mark">лидер</span>')
         : '';
-      const playerText = m.player ? `@${esc(m.player)}` : '<span style="color:#64748b;font-style:italic">свободна</span>';
+      const playerText = m.player ? `<span class="al-member-player">(@${esc(m.player)})</span>` : '';
 
       return `
         <span class="al-modal-member-pill" onclick="closeAllianceModal(); window.openCountryModal('${esc(m.name)}')">
           ${renderFlag(m.flag, m.name)}
           ${avaHtml}
           <span>${esc(m.name)}</span>
-          <span class="al-member-player">(${playerText})</span>
+          ${playerText}
           ${crownMark}
         </span>
       `;
