@@ -3730,13 +3730,17 @@ model-viewer {
   color: var(--text);
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--line);
-  padding: 7px 10px;
+  padding: 6px 10px;
   border-radius: 8px;
+  min-height: 32px;
+  box-sizing: border-box;
 }
 .al-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   color: var(--dim);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .al-leader-badge {
   display: inline-flex;
@@ -3744,19 +3748,51 @@ model-viewer {
   gap: 6px;
   color: var(--text);
   font-weight: 700;
+  font-size: 11.5px;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+.al-leader-badge .c-flag-img,
+.al-leader-row .c-flag-img,
+.al-leader-badge img.c-flag-img {
+  width: 20px !important;
+  height: 14px !important;
+  border-radius: 2px !important;
+  object-fit: cover !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 1px 3px rgba(0, 0, 0, 0.35);
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0 !important;
+}
+.al-leader-badge .emoji-flag,
+.al-leader-row .emoji-flag {
+  font-size: 14px;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 .al-leader-badge .al-leader-ava {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--line2);
   flex-shrink: 0;
 }
+.al-leader-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .al-player {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 500;
   color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 115px;
 }
 
 .al-stats-row {
@@ -4098,14 +4134,16 @@ model-viewer {
   background: rgba(245, 158, 11, 0.18);
   border: 1px solid rgba(245, 158, 11, 0.5);
   color: #fbbf24;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 4px;
-  margin-left: 6px;
+  margin-left: 4px;
   vertical-align: middle;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .al-vacant-pill {
   display: inline-flex;
@@ -4113,14 +4151,16 @@ model-viewer {
   background: rgba(239, 68, 68, 0.14);
   border: 1px solid rgba(239, 68, 68, 0.45);
   color: #f87171;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 4px;
-  margin-left: 6px;
+  margin-left: 4px;
   vertical-align: middle;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .al-member-free {
   font-size: 11px;

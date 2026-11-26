@@ -381,7 +381,7 @@ export function renderSeasonAlliancesCards(alliancesList) {
         <span class="al-leader-badge al-acting" title="И.о. председателя (полномочия перешли от ${esc(succ.founderCountry)} в связи со сменой лидера)">
           ${renderFlag(al.leaderFlag, al.leaderCountry)}
           ${leaderAvaHtml}
-          <span>${esc(al.leaderCountry)}</span>
+          <span class="al-leader-name">${esc(al.leaderCountry)}</span>
           ${al.leaderPlayer ? ` <span class="al-player">(@${esc(al.leaderPlayer)})</span>` : ''}
           <span class="al-acting-pill" title="Полномочия председателя перешли по старшинству державы">ПРЕЕМНИК</span>
         </span>
@@ -391,7 +391,7 @@ export function renderSeasonAlliancesCards(alliancesList) {
       leaderHtml = `
         <span class="al-leader-badge al-vacant" title="Пост председателя вакантен в Discord">
           ${renderFlag(al.leaderFlag, al.leaderCountry)}
-          <span>${esc(al.leaderCountry)}</span>
+          <span class="al-leader-name">${esc(al.leaderCountry)}</span>
           <span class="al-vacant-pill">ВАКАНТНО</span>
         </span>
       `;
@@ -401,7 +401,7 @@ export function renderSeasonAlliancesCards(alliancesList) {
         <span class="al-leader-badge" title="Лидер альянса: ${esc(al.leaderCountry)}">
           ${renderFlag(al.leaderFlag, al.leaderCountry)}
           ${leaderAvaHtml}
-          <span>${esc(al.leaderCountry)}</span>
+          <span class="al-leader-name">${esc(al.leaderCountry)}</span>
           ${al.leaderPlayer ? ` <span class="al-player">(@${esc(al.leaderPlayer)})</span>` : ''}
         </span>
       `;
