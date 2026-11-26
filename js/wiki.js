@@ -179,7 +179,7 @@ function renderArticles() {
       <h3 class="wiki-card-title">${esc(art.title)}</h3>
       <p class="wiki-card-excerpt">${esc(art.excerpt)}</p>
       <div class="wiki-card-bottom">
-        <span>⏱ ${esc(art.readingTime)}</span>
+        <span>⏱ ${esc(calcReadingTime(art))}</span>
         <span>${esc(art.author)}</span>
         <span class="wiki-card-arrow">↗</span>
       </div>
@@ -200,7 +200,7 @@ function renderFeatured() {
       <div class="wiki-featured-meta">
         <span>${esc(art.categoryLabel)}</span>
         <span>•</span>
-        <span>${esc(art.readingTime)} чтения</span>
+        <span>${esc(calcReadingTime(art))} чтения</span>
         <span>•</span>
         <span>${esc(art.author)}</span>
       </div>
@@ -250,21 +250,48 @@ function renderFacts() {
   `).join('');
 }
 
+export function calcReadingTime(art) {
+  if (!art) return '1 мин';
+  const parts = [
+    art.title || '',
+    art.excerpt || '',
+    art.quote || '',
+    ...(art.sections || []).map(s => (s.heading || '') + ' ' + (s.text || '')),
+    ...(art.facts || [])
+  ];
+  const fullText = parts.join(' ').replace(/<[^>]+>/g, ' ');
+  const words = fullText.trim().split(/\s+/).filter(Boolean).length;
+  // Средняя комфортная скорость вдумчивого чтения на русском языке: 160 слов/мин
+  const minutes = Math.max(1, Math.round(words / 160));
+  return `${minutes} мин`;
+}
+
+export function getInitialsAvatar(name) {
+  const clean = String(name || '?').replace(/^[@\s]+/, '').slice(0, 2).toUpperCase();
+  return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="32" fill="%231e293b"/><text x="50%" y="54%" font-family="system-ui,-apple-system,sans-serif" font-size="24" font-weight="bold" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${clean}</text></svg>`;
+}
+
 export const KNOWN_MENTIONS = {
   // Season 31 Leaders & Players
   '_ashkoo139': { name: '_ashkoo139', display: '@_ashkoo139', avatar: 'https://cdn.discordapp.com/avatars/897130924951634021/9dc5e0e855e70a1a05fb3c552518ff8a.png?size=128', key: '_ashkoo139', country: 'Россия' },
   'ashkoo139': { name: '_ashkoo139', display: '@_ashkoo139', avatar: 'https://cdn.discordapp.com/avatars/897130924951634021/9dc5e0e855e70a1a05fb3c552518ff8a.png?size=128', key: '_ashkoo139', country: 'Россия' },
+  'ashkoo': { name: '_ashkoo139', display: '@_ashkoo139', avatar: 'https://cdn.discordapp.com/avatars/897130924951634021/9dc5e0e855e70a1a05fb3c552518ff8a.png?size=128', key: '_ashkoo139', country: 'Россия' },
   'bludebaff': { name: 'bludebaff', display: '@bludebaff', avatar: 'https://cdn.discordapp.com/avatars/1227256760914415657/a_2e3b07630471a727da9bd15ec850e145.gif?size=128', key: 'bludebaff', country: 'Индия' },
   'svvayl': { name: 'svvayl', display: '@svvayl', avatar: 'https://cdn.discordapp.com/avatars/1038163713397620758/b2e3f2ab7b40542573b67acbf014f3cb.png?size=128', key: 'svvayl', country: 'Сирия' },
   'naebni_govna_olyx': { name: 'naebni_govna_olyx', display: '@naebni_govna_olyx', avatar: 'https://cdn.discordapp.com/avatars/1137392083821416478/88edfe7f716069a7b5f5f6974187fecd.png?size=128', key: 'naebni_govna_olyx', country: 'КНР' },
   'coolman20047': { name: 'coolman20047', display: '@coolman20047', avatar: 'https://cdn.discordapp.com/avatars/1527721674139500594/c400a34e39da9d4144114387739ded14.png?size=128', key: 'coolman20047', country: 'Германия' },
   'joskipisk0trias': { name: 'joskipisk0trias', display: '@joskipisk0trias', avatar: 'https://cdn.discordapp.com/guilds/1209153077651963924/users/1133677481694601216/avatars/a_acf57d52cd0d09c46b466876c2f1e578.gif?size=128', key: 'joskipisk0trias', country: 'США' },
+  'joskipisk0tr': { name: 'joskipisk0trias', display: '@joskipisk0trias', avatar: 'https://cdn.discordapp.com/guilds/1209153077651963924/users/1133677481694601216/avatars/a_acf57d52cd0d09c46b466876c2f1e578.gif?size=128', key: 'joskipisk0trias', country: 'США' },
   'sparkling_seahorse_33427': { name: 'sparkling_seahorse_33427', display: '@sparkling_seahorse_33427', avatar: 'https://cdn.discordapp.com/avatars/1503453768509821071/13faf25f2f1093321a8e962ffd901028.png?size=128', key: 'sparkling_seahorse_33427', country: 'Иран' },
+  'sparkling_seahorse': { name: 'sparkling_seahorse_33427', display: '@sparkling_seahorse_33427', avatar: 'https://cdn.discordapp.com/avatars/1503453768509821071/13faf25f2f1093321a8e962ffd901028.png?size=128', key: 'sparkling_seahorse_33427', country: 'Иран' },
   'otkrilochko_78228': { name: 'otkrilochko_78228', display: '@otkrilochko_78228', avatar: 'https://cdn.discordapp.com/avatars/1170359740249948181/923848364ddf7ef05ee5aaabb124f3f1.png?size=128', key: 'otkrilochko_78228', country: 'Южная Корея' },
+  'otkrilochko': { name: 'otkrilochko_78228', display: '@otkrilochko_78228', avatar: 'https://cdn.discordapp.com/avatars/1170359740249948181/923848364ddf7ef05ee5aaabb124f3f1.png?size=128', key: 'otkrilochko_78228', country: 'Южная Корея' },
   'vova_abh_ss': { name: 'vova_abh_ss', display: '@vova_abh_ss', avatar: 'https://cdn.discordapp.com/avatars/1000640216664658010/66f0053bb3443181e851dc4be38808bb.png?size=128', key: 'vova_abh_ss', country: 'Тайвань' },
+  'vova_abh': { name: 'vova_abh_ss', display: '@vova_abh_ss', avatar: 'https://cdn.discordapp.com/avatars/1000640216664658010/66f0053bb3443181e851dc4be38808bb.png?size=128', key: 'vova_abh_ss', country: 'Тайвань' },
   'zenithxclown': { name: 'zenithxclown', display: '@zenithxclown', avatar: 'https://cdn.discordapp.com/avatars/955060237449166938/95dcd12571b268173b72bba2c0ea1eac.png?size=128', key: 'zenithxclown', country: 'Япония' },
   'chaim1ch': { name: 'chaim1ch', display: '@chaim1ch', avatar: 'https://cdn.discordapp.com/avatars/1060644884781994126/f7d46af850285d12cd1d58f8e6884f19.png?size=128', key: 'chaim1ch', country: 'Австралия' },
   'jakiro5.5': { name: 'jakiro5.5', display: '@jakiro5.5', avatar: 'https://cdn.discordapp.com/avatars/916907042545999883/c9ef4d3dce344db012b17febab3dc9c7.png?size=128', key: 'jakiro5.5', country: 'Украина' },
+  'jakiro5': { name: 'jakiro5.5', display: '@jakiro5.5', avatar: 'https://cdn.discordapp.com/avatars/916907042545999883/c9ef4d3dce344db012b17febab3dc9c7.png?size=128', key: 'jakiro5.5', country: 'Украина' },
   'elwey4194': { name: 'elwey4194', display: '@elwey4194', avatar: 'https://cdn.discordapp.com/avatars/1119969034629304341/29f8151fe41888ae92cc0ed9bf58545b.png?size=128', key: 'elwey4194', country: 'Израиль' },
   'lirozit': { name: 'lirozit', display: '@lirozit', avatar: 'https://cdn.discordapp.com/avatars/1111768367670509603/b883f3aa4db2810c0958ed8f5aa8f8e3.png?size=128', key: 'lirozit', country: 'Великобритания' },
   'perikkl': { name: 'perikkl', display: '@perikkl', avatar: 'https://cdn.discordapp.com/avatars/1119919252485443686/6f4930021c411ee67e27c6955a7c3e96.png?size=128', key: 'perikkl', country: 'Ирландия' },
@@ -275,59 +302,84 @@ export const KNOWN_MENTIONS = {
   'aytaconan2': { name: 'aytaconan2', display: '@aytaconan2', avatar: 'https://cdn.discordapp.com/avatars/484044030640914437/492785e7674353a297aa8fba3c2041bb.png?size=128', key: 'aytaconan2', country: 'Азербайджан' },
   'aytac': { name: 'aytac', display: '@aytac', avatar: 'https://cdn.discordapp.com/avatars/484044030640914437/492785e7674353a297aa8fba3c2041bb.png?size=128', key: 'aytac', country: 'Азербайджан' },
   'marsgooddayevery': { name: 'marsgooddayevery', display: '@marsgooddayevery', avatar: 'https://cdn.discordapp.com/avatars/1532495116747538538/e7a61183be6bf7d6ae0a3c957c0ec160.png?size=128', key: 'marsgooddayevery', country: 'Academi' },
+  'marseik': { name: 'MarsEik', display: '@MarsEik', avatar: 'https://cdn.discordapp.com/avatars/1532495116747538538/e7a61183be6bf7d6ae0a3c957c0ec160.png?size=128', key: 'marsgooddayevery', country: 'Academi' },
   'ohixxx': { name: 'ohixxx', display: '@ohixxx', avatar: 'https://cdn.discordapp.com/avatars/758027179714936965/a_5b7608f6ad14d22bd0f872dd18f90a0a.gif?size=128', key: 'ohixxx', country: 'ДНР' },
+  'filetia._01629': { name: 'filetia._01629', display: '@filetia._01629', avatar: 'https://cdn.discordapp.com/avatars/1531974876955672632/1aecba6016327e6279f2d29e2356c6e3.png?size=128', key: 'filetia._01629', country: 'Каталония' },
+  'filetia': { name: 'filetia._01629', display: '@filetia._01629', avatar: 'https://cdn.discordapp.com/avatars/1531974876955672632/1aecba6016327e6279f2d29e2356c6e3.png?size=128', key: 'filetia._01629', country: 'Каталония' },
+  'egorpro0753': { name: 'egorpro0753', display: '@egorpro0753', avatar: 'https://cdn.discordapp.com/avatars/1197560940661571597/6920adc6538a5b9f0101923eccd49c21.png?size=128', key: 'egorpro0753', country: 'ЦСН «Альфа»' },
+  'farinik': { name: 'farinik', display: '@farinik', avatar: 'https://cdn.discordapp.com/avatars/1511435357160210643/5a8ed10171202de532ae43c6734db8bf.png?size=128', key: 'farinik', country: 'Армения' },
+  'loshara_hatred': { name: 'loshara_hatred', display: '@loshara_hatred', avatar: 'https://cdn.discordapp.com/avatars/901051402799964201/0f89c22e5d92bf2c69b24acda9136c9f.png?size=128', key: 'loshara_hatred', country: 'Русич' },
+  'vanoreg': { name: 'vanoreg', display: '@vanoreg', avatar: 'https://cdn.discordapp.com/avatars/675659630348730384/cd107a56c138894b9cdd806fa61e8fc2.png?size=128', key: 'vanoreg', country: 'ЦСО «Альфа»' },
+  'cortez0502': { name: 'cortez0502', display: '@cortez0502', avatar: 'https://cdn.discordapp.com/avatars/1482440823378280654/96b8189f6b6830b4d82d30c59d2bd3a4.png?size=128', key: 'cortez0502', country: 'Сербия' },
+  'bomblyiraq': { name: 'bomblyiraq', display: '@bomblyiraq', avatar: 'https://cdn.discordapp.com/avatars/829727977696395266/5c49b67a63081074605caf75b6e79cd3.png?size=128', key: 'bomblyiraq', country: 'Италия' },
 
   // Server Bots & System Monitoring
-  'zarplata': { name: 'zarplata', display: '@zarplata', avatar: 'https://cdn.discordapp.com/embed/avatars/4.png', key: 'zarplata', role: 'Служебный бот / Мониторинг активности' },
+  'zarplata': { name: 'zarplata', display: '@zarplata', avatar: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><circle cx="64" cy="64" r="64" fill="%23f59e0b"/><rect x="36" y="44" width="56" height="44" rx="10" fill="%230f172a"/><circle cx="50" cy="62" r="6" fill="%2338bdf8"/><circle cx="78" cy="62" r="6" fill="%2338bdf8"/><path d="M52 76h24" stroke="%2338bdf8" stroke-width="4" stroke-linecap="round"/><circle cx="64" cy="32" r="5" fill="%23ef4444"/><line x1="64" y1="36" x2="64" y2="44" stroke="%23ef4444" stroke-width="4"/></svg>', key: 'zarplata', role: 'Служебный бот / Мониторинг активности' },
 
   // Staff & Administration
-  'ponzc': { name: 'ponzc', display: '@ponzc', avatar: 'https://cdn.discordapp.com/avatars/830428424677490728/6263ae7ec80a0684bfce6cefbdfaa1b9.png?size=128', key: 'ponzc', role: 'Архивист' },
+  'ponzc': { name: 'ponzc', display: '@ponzc', avatar: 'https://cdn.discordapp.com/avatars/830428424677490728/3f56105a102a8ede36259e2ab9ca5051.png?size=128', key: 'ponzc', role: 'Архивист / Администратор' },
   'qwertx': { name: 'qwertx', display: '@qwertx', avatar: 'https://cdn.discordapp.com/avatars/1066701976949239905/7eb872a08892f3964ff0fb70ca8c42b6.png?size=128', key: 'qwertx', role: 'Зам. Куратора Политологов' },
-  'kitaezik': { name: 'kitaezik', display: '@kitaezik', avatar: 'https://cdn.discordapp.com/avatars/758998250610360341/39f0ea77a941655bebb4663e27301c27.png?size=128', key: 'kitaezik', role: 'Создатель сайта' },
-  'qbitf': { name: 'qbitf', display: '@kitaezik', avatar: 'https://cdn.discordapp.com/avatars/758998250610360341/39f0ea77a941655bebb4663e27301c27.png?size=128', key: 'kitaezik', role: 'Создатель сайта' },
-  'yabl1ch': { name: 'yabl1ch', display: '@yabl1ch', avatar: 'https://cdn.discordapp.com/avatars/800254982641025056/a_b7cf2697a0bf9961da88b56d3ea74720.png?size=128', key: 'yabl1ch', role: 'Куратор Анкетологов' },
-  'xil3dd': { name: 'xil3dd', display: '@xil3dd', avatar: 'https://cdn.discordapp.com/embed/avatars/1.png', key: 'xil3dd', role: 'Куратор Модераторов' },
-  'dyrm9': { name: 'dyrm9', display: '@dyrm9', avatar: 'https://cdn.discordapp.com/embed/avatars/2.png', key: 'dyrm9', role: 'Администратор' },
-  'laybay': { name: 'laybay', display: '@laybay', avatar: 'https://cdn.discordapp.com/embed/avatars/5.png', key: 'laybay', role: 'Куратор Технологов' }
+  'kitaezik': { name: 'kitaezik', display: '@kitaezik', avatar: 'https://cdn.discordapp.com/avatars/758998250610360341/1adf1b36f84e13b6cd282910b79d9648.png?size=128', key: 'kitaezik', role: 'Создатель сайта' },
+  'qbitf': { name: 'qbitf', display: '@kitaezik', avatar: 'https://cdn.discordapp.com/avatars/758998250610360341/1adf1b36f84e13b6cd282910b79d9648.png?size=128', key: 'kitaezik', role: 'Создатель сайта' },
+  'yabl1ch': { name: 'yabl1ch', display: '@yabl1ch', avatar: 'https://cdn.discordapp.com/avatars/800254982641025056/f532bafe0f0287fc28281fe76a0325c0.png?size=128', key: 'yabl1ch', role: 'Куратор Анкетологов' },
+  'xil3dd': { name: 'xil3dd', display: '@xil3dd', avatar: 'https://cdn.discordapp.com/avatars/928360132482572371/75a6e47b610f5e5e0d0edf1e4d95e26b.png?size=128', key: 'xil3dd', role: 'Куратор Модераторов' },
+  'dyrm9': { name: 'dyrm9', display: '@dyrm9', avatar: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><circle cx="64" cy="64" r="64" fill="%230284c7"/><path d="M36 52h44a10 10 0 1 0-10-10m-26 22h58a10 10 0 1 1-10 10m-28 22h32a8 8 0 1 0-8-8" fill="none" stroke="%23ffffff" stroke-width="7" stroke-linecap="round"/></svg>', key: 'dyrm9', role: 'Технолог / Воздухан' },
+  'laybay': { name: 'laybay', display: '@laybay', avatar: 'https://cdn.discordapp.com/avatars/1135494383773433937/e7c3107d92d3ae28e439406ba1e49357.png?size=128', key: 'laybay', role: 'Куратор Технологов и Картографов' },
+  'laybaygeo': { name: 'laybay', display: '@laybay', avatar: 'https://cdn.discordapp.com/avatars/1135494383773433937/e7c3107d92d3ae28e439406ba1e49357.png?size=128', key: 'laybay', role: 'Куратор Технологов и Картографов' },
+  'nefusad': { name: 'nefusad', display: '@nefusad', avatar: 'https://cdn.discordapp.com/avatars/1027662788274966539/4fc310925da5f4b5cb4f51ca978b8574.png?size=128', key: 'nefusad', role: 'Зам. Куратора / Политолог' },
+  'slonya': { name: 'slonya', display: '@slonya', avatar: 'https://cdn.discordapp.com/avatars/1137392083821416478/8a86abdfbc4baf0257a5fd388672eac3.png?size=128', key: 'slonya', role: 'Зам. Куратора Модераторов и Технологов' },
+  'flowy': { name: 'flowy', display: '@flowy', avatar: 'https://cdn.discordapp.com/avatars/825769203347882042/0e29d84c19de3e819e41e605d07743fa.png?size=128', key: 'flowy', role: 'Администратор' },
+  'jevolxd': { name: 'jevolxd', display: '@jevolxd', avatar: 'https://cdn.discordapp.com/avatars/1317409468685877339/ff4e85aabf6d8bbb85b98ce80ceafbc6.png?size=128', key: 'jevolxd', role: 'Политолог' },
+  'provonsali': { name: 'provonsali', display: '@provonsali', avatar: 'https://cdn.discordapp.com/avatars/1037076729195417620/9566e99d4c9754f41fbea58a34b43876.png?size=128', key: 'provonsali', role: 'Политолог' },
+  'woiser': { name: 'woiser', display: '@woiser', avatar: 'https://cdn.discordapp.com/avatars/743237681424629780/3a152771fb9ecb89650db814226948ce.png?size=128', key: 'woiser', role: 'Политолог' },
+  'kid': { name: 'kid', display: '@kid', avatar: 'https://cdn.discordapp.com/avatars/955060237449166938/308d410337eb452e9d9270c763904996.png?size=128', key: 'kid', role: 'Анкетолог' },
+  'vaelite': { name: 'vaelite', display: '@vaelite', avatar: 'https://cdn.discordapp.com/avatars/1334532453238440000/1819072df09617eaeeee629485aef10e.png?size=128', key: 'vaelite', role: 'Военный ведущий' }
 };
 
 export function formatWikiText(text) {
   if (!text) return '';
   let out = esc(text);
 
-  out = out.replace(/@([a-zA-Z0-9_\-\.]+)/g, (match, username) => {
+  out = out.replace(/@([a-zA-Z0-9_\-]+(?:\.[a-zA-Z0-9_\-]+)*)/g, (match, username) => {
     const norm = username.toLowerCase();
-    const meta = KNOWN_MENTIONS[norm] || {
+    const meta = KNOWN_MENTIONS[norm] || (typeof window !== 'undefined' && window.__PLAYERS_BY_USERNAME && window.__PLAYERS_BY_USERNAME[norm]) || {
       name: username,
       display: '@' + username,
-      avatar: 'https://cdn.discordapp.com/embed/avatars/0.png',
+      avatar: getInitialsAvatar(username),
       key: username
     };
 
-    return `<span class="wiki-player-tag" data-player="${esc(meta.key)}" title="Открыть досье ${esc(meta.display)}" onclick="event.stopPropagation(); window.openPlayerDossier('${esc(meta.key)}')"><img class="wiki-player-avatar" src="${meta.avatar}" alt="${esc(meta.name)}" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"><span class="wiki-player-name">${esc(meta.display)}</span></span>`;
+    const safeAvatar = meta.avatar || getInitialsAvatar(meta.name || username);
+
+    return `<span class="wiki-player-tag" data-player="${esc(meta.key || username)}" title="Открыть досье ${esc(meta.display || ('@' + username))}" onclick="event.stopPropagation(); window.openPlayerDossier('${esc(meta.key || username)}')"><img class="wiki-player-avatar" src="${safeAvatar}" alt="${esc(meta.name || username)}" onerror="this.onerror=null;this.src='${getInitialsAvatar(meta.name || username)}'"><span class="wiki-player-name">${esc(meta.display || ('@' + username))}</span></span>`;
   });
 
   return out;
 }
 
-window.openPlayerDossier = function(rawKey) {
+export function openPlayerDossier(rawKey) {
   const norm = String(rawKey || '').toLowerCase().replace(/[@\s]/g, '');
-  if (norm === 'qwertx' || norm === 'ponzc' || norm === 'xil3dd' || norm === 'kitaezik' || norm === 'yabl1ch') {
-    if (typeof window.openStaffModal === 'function') return window.openStaffModal(norm);
+  if (norm === 'qwertx' || norm === 'ponzc' || norm === 'xil3dd' || norm === 'kitaezik' || norm === 'yabl1ch' || norm === 'laybay') {
+    if (typeof window !== 'undefined' && typeof window.openStaffModal === 'function') return window.openStaffModal(norm);
   }
 
   const meta = KNOWN_MENTIONS[norm];
-  if (meta && meta.country && typeof window.openCountryModal === 'function') {
+  if (meta && meta.country && typeof window !== 'undefined' && typeof window.openCountryModal === 'function') {
     return window.openCountryModal(meta.country);
   }
   if (meta && meta.role && !meta.country) {
+    if (typeof window !== 'undefined' && typeof window.openStaffModal === 'function') return window.openStaffModal(norm);
     return;
   }
 
-  if (typeof window.go === 'function') {
+  if (typeof window !== 'undefined' && typeof window.go === 'function') {
     window.go('season');
   }
-};
+}
+
+if (typeof window !== 'undefined') {
+  window.openPlayerDossier = openPlayerDossier;
+}
 
 export function openWikiArticle(id) {
   const art = LORE.find(item => item.id === id);
@@ -342,7 +394,7 @@ export function openWikiArticle(id) {
   if (!modal || !body) return;
 
   if (title) title.textContent = art.title;
-  if (sub) sub.textContent = `${art.categoryLabel} · ${art.readingTime} чтения · ${art.author}`;
+  if (sub) sub.textContent = `${art.categoryLabel} · ${calcReadingTime(art)} чтения · ${art.author}`;
   if (icon) icon.textContent = art.icon || '📖';
 
   const sectionsHtml = (art.sections || []).map(sec => `

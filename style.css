@@ -3490,6 +3490,10 @@ model-viewer {
   color: var(--dim);
 }
 
+#wikiReaderModal.staff-modal-overlay {
+  z-index: 10010;
+}
+
 .wiki-reader-card {
   max-width: 820px;
   width: 90%;
