@@ -4058,6 +4058,143 @@ model-viewer {
   box-shadow: 0 0 18px rgba(74, 222, 128, 0.6);
 }
 
+/* Статус преемственности и вакантных мест в альянсах */
+.al-acting-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.al-vacant-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #f87171;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.al-member-free {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text-muted, #64748b);
+  opacity: 0.8;
+  margin-left: 3px;
+}
+.al-chip-crown {
+  font-size: 11px;
+  margin-left: 3px;
+}
+.al-succession-box {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 14px;
+}
+.al-succ-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.al-succ-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.al-succ-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+.al-succ-label {
+  color: var(--text-muted, #94a3b8);
+  min-width: 175px;
+}
+.al-role-code {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: #38bdf8;
+}
+.al-canon-sub {
+  font-size: 12px;
+  color: var(--text-muted, #94a3b8);
+  font-style: italic;
+  margin-left: 4px;
+}
+.al-tag-acting {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+.al-succ-note {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted, #94a3b8);
+  background: rgba(56, 189, 248, 0.08);
+  border-left: 3px solid #38bdf8;
+  padding: 8px 12px;
+  border-radius: 0 6px 6px 0;
+}
+.badge-role-active {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.badge-role-acting {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.badge-role-vacant {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
 /* Мульти-бейджи альянсов в HUD глобуса */
 .country-card-factions-wrap {
   display: flex;
